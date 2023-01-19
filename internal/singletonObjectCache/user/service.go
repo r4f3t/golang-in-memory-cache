@@ -3,7 +3,7 @@ package user
 import "github.com/r4f3t/webapi/mockdata"
 
 type Service interface {
-	GetUserById(id int) mockdata.UserModel
+	GetUserById(id int) *mockdata.UserModel
 }
 
 type service struct {
@@ -18,7 +18,7 @@ func NewService(userRepo UserRepository, userCache UserCacheManager) Service {
 	}
 }
 
-func (receiver *service) GetUserById(id int) mockdata.UserModel {
+func (receiver *service) GetUserById(id int) *mockdata.UserModel {
 	//check cached object first
 	result := receiver.userCacheManager.GetUser(id)
 	// if it is null fill object from db
@@ -31,5 +31,5 @@ func (receiver *service) GetUserById(id int) mockdata.UserModel {
 		result = receiver.userCacheManager.GetUser(id)
 	}
 
-	return *result
+	return result
 }

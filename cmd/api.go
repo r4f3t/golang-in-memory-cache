@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
-	"github.com/r4f3t/webapi/internal/user"
-	usercontroller "github.com/r4f3t/webapi/internal/user/controller"
+	"github.com/r4f3t/webapi/internal/singletonObjectCache/user"
+	"github.com/r4f3t/webapi/internal/singletonObjectCache/user/controller"
 	"github.com/spf13/cobra"
 )
 
@@ -41,7 +41,7 @@ func init() {
 		// construct service
 		userService := user.NewService(userRepository, userCacheManager)
 
-		usercontroller.MakeHandler(apiCmd.instance, usercontroller.NewController(userService))
+		controller.MakeHandler(apiCmd.instance, controller.NewController(userService))
 
 		apiCmd.instance.Logger.Fatal(apiCmd.instance.Start(fmt.Sprintf(":%s", apiCmd.Port)))
 
