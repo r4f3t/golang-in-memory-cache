@@ -2,11 +2,14 @@ package config
 
 type (
 	Configuration struct {
-		SqlDbSettings DbSettings `json:"SqlDbSettings"`
+		PostgreDbSettings DbSettings `json:"PostgreDbSettings"`
 	}
 
 	DbSettings struct {
-		Uri          string `json:"Uri"`
-		DatabaseName string `json:"DatabaseName"`
+		Host     string `json:"Host"`
+		User     string `json:"User"`
+		Password string `json:"Password"`
+		DbName   string `json:"DbName"`
+		Port     string `json:"Port"`
 	}
 )
