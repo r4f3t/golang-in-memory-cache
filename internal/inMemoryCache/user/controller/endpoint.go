@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/r4f3t/webapi/internal/singletonObjectCache/user"
+	"github.com/r4f3t/webapi/internal/inMemoryCache/user"
 	"net/http"
 	"strconv"
 

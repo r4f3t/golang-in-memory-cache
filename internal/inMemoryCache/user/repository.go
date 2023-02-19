@@ -5,6 +5,7 @@ import "github.com/r4f3t/webapi/mockdata"
 // repository interface that repository struct implements
 type UserRepository interface {
 	GetUsersFromDb() *mockdata.TableModel
+	GetUsersById(id int) *mockdata.TableModel
 }
 
 // repository model that constructor returns
@@ -26,4 +27,8 @@ func NewRepository() UserRepository {
 
 func (receiver *repository) GetUsersFromDb() *mockdata.TableModel {
 	return mockdata.GetAll()
+}
+
+func (receiver *repository) GetUsersById(id int) *mockdata.TableModel {
+	return mockdata.GetById(id)
 }
