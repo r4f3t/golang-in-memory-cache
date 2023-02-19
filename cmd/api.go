@@ -1,19 +1,18 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
+	"github.com/r4f3t/webapi/internal/config"
 	inMemUser "github.com/r4f3t/webapi/internal/inMemoryCache/user"
 	inMemUserController "github.com/r4f3t/webapi/internal/inMemoryCache/user/controller"
-	"github.com/r4f3t/webapi/internal/singletonObjectCache/user"
-	"github.com/r4f3t/webapi/internal/singletonObjectCache/user/controller"
 	"github.com/spf13/cobra"
 )
 
 type api struct {
-	instance *echo.Echo
-	command  *cobra.Command
-	Port     string
+	instance   *echo.Echo
+	command    *cobra.Command
+	Port       string
+	DbSettings config.DbSettings
 }
 
 // apiCmd represents the api command
@@ -35,28 +34,17 @@ func init() {
 	apiCmd.command.RunE = func(cmd *cobra.Command, args []string) error {
 
 		// construct repository
-		userRepository := user.NewRepository()
-
-		// construct repository
 		inMemUserRepository := inMemUser.NewRepository()
 
 		// construct user cache manager
-		userCacheManager := user.NewUserCacheManager()
-
-		// construct user cache manager
-		inMemUserCacheManager := inMemUser.NewUserCacheManager()
+		inMemUserCacheManager := inMemUser.NewUserCacheManager(inMemUserRepository)
 
 		// construct service
-		userService := user.NewService(userRepository, userCacheManager)
-
-		// construct service
-		inMemUserService := inMemUser.NewService(inMemUserRepository, inMemUserCacheManager)
-
-		controller.MakeHandler(apiCmd.instance, controller.NewController(userService))
+		inMemUserService := inMemUser.NewService(inMemUserCacheManager)
 
 		inMemUserController.MakeHandler(apiCmd.instance, inMemUserController.NewController(inMemUserService))
 
-		apiCmd.instance.Logger.Fatal(apiCmd.instance.Start(fmt.Sprintf(":%s", apiCmd.Port)))
+		apiCmd.instance.Logger.Fatal(apiCmd.instance.Start(":8080"))
 
 		return nil
 	}
