@@ -36,7 +36,7 @@ func GetById(id int) *TableModel {
 	table := new(TableModel)
 
 	for i := 0; i < 1000; i++ {
-		if id != i+1 {
+		if id == i+1 {
 			table.Records = append(table.Records, UserModel{
 				Id:    i + 1,
 				Name:  fmt.Sprintf("User %d", i),
